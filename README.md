@@ -7,7 +7,7 @@
 
  - A subquery is a SQL query written inside another SQL query. The outer query — called the parent query — uses the result of the subquery as part of its logic. The database always runs the inner query first, then passes its result to the outer query to complete the work.
 
-    - Think of it as a question inside a question. For example: "Which students scored above the class average?" — the inner question is "what is the average mark?" and the outer question is "which students beat that number?" Subqueries can appear in the WHERE clause, the FROM clause, or the SELECT clause.
+- Think of it as a question inside a question. For example: "Which students scored above the class average?" — the inner question is "what is the average mark?" and the outer question is "which students beat that number?" Subqueries can appear in the WHERE clause, the FROM clause, or the SELECT clause.
 
 ### 2. Types of subqueries
 
@@ -95,14 +95,14 @@ WHERE patient_id IN (
 
  - A Common Table Expression (CTE) is a named, temporary result set defined at the top of a query using the WITH keyword. Unlike a subquery buried inside a clause, a CTE sits clearly at the top, has a meaningful name, and can be referenced multiple times within the same query.
 
-    - CTEs do not create permanent database objects — they exist only for the duration of the single query they are part of. Their main value is readability: breaking complex logic into clearly named steps that any developer can follow.
+- CTEs do not create permanent database objects — they exist only for the duration of the single query they are part of. Their main value is readability: breaking complex logic into clearly named steps that any developer can follow.
 
 
-    - A CTE does not automatically make your query faster. What it does is make your query far easier to read, debug, and maintain — which matters enormously when working in a team or revisiting code months later.
+- A CTE does not automatically make your query faster. What it does is make your query far easier to read, debug, and maintain — which matters enormously when working in a team or revisiting code months later.
 
 ### 5. Types and use cases of CTEs
 
-  - Standard (non-recursive) CTE
+ - Standard (non-recursive) CTE
 
 - The most common form. One or more named result sets are defined at the top with WITH, then used in the final SELECT. The example below calculates each student's average mark, then filters to show only those averaging above 70.
 
@@ -176,9 +176,9 @@ ORDER BY dac.total_appointments DESC;
 
  - A recursive CTE is one of the most powerful features in SQL. It allows a query to refer to itself, enabling traversal of hierarchical data — org charts, folder trees, category structures, and any parent-child relationship stored in a self-referencing table.
 
-    - A recursive CTE has two parts joined by UNION ALL: the anchor member (the starting point) and the recursive member (the step that builds on the previous result). The database keeps running the recursive step until no new rows are produced.
+ - A recursive CTE has two parts joined by UNION ALL: the anchor member (the starting point) and the recursive member (the step that builds on the previous result). The database keeps running the recursive step until no new rows are produced.
 
-    - The doctors table in city_hospital has a supervisor_id column that points back to another doctor — a perfect hierarchy. The query below walks that structure from the top (doctors with no supervisor) all the way down, adding indentation to show depth.
+- The doctors table in city_hospital has a supervisor_id column that points back to another doctor — a perfect hierarchy. The query below walks that structure from the top (doctors with no supervisor) all the way down, adding indentation to show depth.
 
 city_hospital — Q10: recursive CTE — doctor supervision hierarchy
 WITH RECURSIVE doctor_hierarchy AS (
@@ -252,7 +252,7 @@ When to reach for each one
 
 - Use CTE when	The logic has multiple steps, the result needs to be referenced more than once, you want the query to be readable by others, or you need recursion to traverse a hierarchy.
 
-    - Use subquery when	The logic is simple and used only once — a quick scalar comparison, an IN filter, or an EXISTS check where a CTE would add unnecessary length.
-
-    - Avoid deep nesting	More than two levels of nested subqueries is a red flag. At that point, a CTE will almost always produce cleaner, easier-to-debug code.
+ - Use subquery when	The logic is simple and used only once — a quick scalar comparison, an IN filter, or an EXISTS check where a CTE would add unnecessary length.
+   
+ - Avoid deep nesting	More than two levels of nested subqueries is a red flag. At that point, a CTE will almost always produce cleaner, easier-to-debug code.
 
