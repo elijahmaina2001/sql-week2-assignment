@@ -5,17 +5,17 @@
 
 ### 1. What is a subquery?
 
-    - A subquery is a SQL query written inside another SQL query. The outer query — called the parent query — uses the result of the subquery as part of its logic. The database always runs the inner query first, then passes its result to the outer query to complete the work.
+ - A subquery is a SQL query written inside another SQL query. The outer query — called the parent query — uses the result of the subquery as part of its logic. The database always runs the inner query first, then passes its result to the outer query to complete the work.
 
     - Think of it as a question inside a question. For example: "Which students scored above the class average?" — the inner question is "what is the average mark?" and the outer question is "which students beat that number?" Subqueries can appear in the WHERE clause, the FROM clause, or the SELECT clause.
 
 ### 2. Types of subqueries
 
-    - Subqueries are grouped in two ways: by where they sit in the query, and by how they relate to the outer query.
+ - Subqueries are grouped in two ways: by where they sit in the query, and by how they relate to the outer query.
 
 #### Non-correlated subqueries
 
-    - A non-correlated subquery is fully independent — it runs once and returns a fixed result that the outer query uses. The example below finds every exam result where the mark is higher than the overall class average. The inner query calculates that average once, and the outer query filters against it.
+ - A non-correlated subquery is fully independent — it runs once and returns a fixed result that the outer query uses. The example below finds every exam result where the mark is higher than the overall class average. The inner query calculates that average once, and the outer query filters against it.
 
 nairobi_academy — Q1: WHERE subquery (non-correlated)
 SELECT
@@ -29,7 +29,7 @@ WHERE marks > (
 
 #### Correlated subqueries
 
-    - A correlated subquery references a column from the outer query, so it re-executes once for every row the outer query processes. The example below uses a correlated subquery inside the SELECT clause to show each student's name alongside the total number of exams they have individually sat.
+ - A correlated subquery references a column from the outer query, so it re-executes once for every row the outer query processes. The example below uses a correlated subquery inside the SELECT clause to show each student's name alongside the total number of exams they have individually sat.
 
 nairobi_academy — Q3: SELECT subquery (correlated)
 SELECT
@@ -43,11 +43,11 @@ SELECT
 FROM students s;
 
 
-    - Correlated subqueries re-run for every row in the outer query. On a small table like students (10 rows) this is fine. On a table with 100,000 rows it becomes very expensive — consider rewriting as a JOIN or CTE instead.
+ - Correlated subqueries re-run for every row in the outer query. On a small table like students (10 rows) this is fine. On a table with 100,000 rows it becomes very expensive — consider rewriting as a JOIN or CTE instead.
 
 #### Scalar subquery
 
-    - A scalar subquery returns exactly one value — one row, one column. It can sit in the WHERE clause as a comparison target. The example below finds the student who achieved the single highest mark in the entire exam_results table.
+ - A scalar subquery returns exactly one value — one row, one column. It can sit in the WHERE clause as a comparison target. The example below finds the student who achieved the single highest mark in the entire exam_results table.
 
 nairobi_academy — Q2: scalar subquery in WHERE
 SELECT
@@ -61,7 +61,7 @@ WHERE marks = (
 
 #### EXISTS subquery
 
-    - EXISTS is a special form that does not return data — it checks whether at least one matching row exists. As soon as one match is found the database stops looking, making it very efficient for membership checks. The query below returns every subject that has at least one recorded exam result.
+ - EXISTS is a special form that does not return data — it checks whether at least one matching row exists. As soon as one match is found the database stops looking, making it very efficient for membership checks. The query below returns every subject that has at least one recorded exam result.
 
 nairobi_academy — Q4: EXISTS subquery
 SELECT
@@ -76,7 +76,7 @@ WHERE EXISTS (
 
 ### 3. When to use subqueries
 
-    - Subqueries are a good fit when the logic is simple, the result is only needed once, or you need a quick inline calculation. The example below from city_hospital finds all patients who have attended more than one appointment — a clean use of a WHERE subquery with GROUP BY and HAVING.
+ - Subqueries are a good fit when the logic is simple, the result is only needed once, or you need a quick inline calculation. The example below from city_hospital finds all patients who have attended more than one appointment — a clean use of a WHERE subquery with GROUP BY and HAVING.
 
 city_hospital — Q5: WHERE subquery with GROUP BY / HAVING
 SELECT
@@ -93,7 +93,7 @@ WHERE patient_id IN (
 
 ### 4. What is a CTE?
 
-    - A Common Table Expression (CTE) is a named, temporary result set defined at the top of a query using the WITH keyword. Unlike a subquery buried inside a clause, a CTE sits clearly at the top, has a meaningful name, and can be referenced multiple times within the same query.
+ - A Common Table Expression (CTE) is a named, temporary result set defined at the top of a query using the WITH keyword. Unlike a subquery buried inside a clause, a CTE sits clearly at the top, has a meaningful name, and can be referenced multiple times within the same query.
 
     - CTEs do not create permanent database objects — they exist only for the duration of the single query they are part of. Their main value is readability: breaking complex logic into clearly named steps that any developer can follow.
 
@@ -102,9 +102,9 @@ WHERE patient_id IN (
 
 ### 5. Types and use cases of CTEs
 
-    - Standard (non-recursive) CTE
+  - Standard (non-recursive) CTE
 
-    - The most common form. One or more named result sets are defined at the top with WITH, then used in the final SELECT. The example below calculates each student's average mark, then filters to show only those averaging above 70.
+- The most common form. One or more named result sets are defined at the top with WITH, then used in the final SELECT. The example below calculates each student's average mark, then filters to show only those averaging above 70.
 
 nairobi_academy — Q7: single CTE — students averaging above 70
 WITH student_averages AS (
@@ -125,7 +125,7 @@ ORDER BY sa.avg_mark DESC;
 
 #### Chained CTEs
 
-    - Multiple CTEs can be defined in sequence, separated by commas. Each CTE can reference the ones defined before it, building up the logic step by step like a pipeline. The example below first ranks all results by marks, then isolates only the top result, and finally joins back to get student and subject names.
+ - Multiple CTEs can be defined in sequence, separated by commas. Each CTE can reference the ones defined before it, building up the logic step by step like a pipeline. The example below first ranks all results by marks, then isolates only the top result, and finally joins back to get student and subject names.
 
 nairobi_academy — Q8: chained CTEs — rank results, then isolate the top
 WITH
@@ -153,7 +153,7 @@ JOIN subjects sub ON tr.subject_id  = sub.subject_id;
 
 #### CTE for aggregation and filtering
 
-    - CTEs are ideal when you need to aggregate data and then filter on that aggregation. The example from city_hospital counts each doctor's total appointments in the CTE, then the outer query filters to show only doctors who have seen more than one patient.
+ - CTEs are ideal when you need to aggregate data and then filter on that aggregation. The example from city_hospital counts each doctor's total appointments in the CTE, then the outer query filters to show only doctors who have seen more than one patient.
 
 city_hospital — Q9: CTE — doctors with more than one appointment
 WITH doctor_appointment_counts AS (
@@ -174,7 +174,7 @@ ORDER BY dac.total_appointments DESC;
 
 #### Recursive CTE
 
-    - A recursive CTE is one of the most powerful features in SQL. It allows a query to refer to itself, enabling traversal of hierarchical data — org charts, folder trees, category structures, and any parent-child relationship stored in a self-referencing table.
+ - A recursive CTE is one of the most powerful features in SQL. It allows a query to refer to itself, enabling traversal of hierarchical data — org charts, folder trees, category structures, and any parent-child relationship stored in a self-referencing table.
 
     - A recursive CTE has two parts joined by UNION ALL: the anchor member (the starting point) and the recursive member (the step that builds on the previous result). The database keeps running the recursive step until no new rows are produced.
 
@@ -214,10 +214,10 @@ ORDER BY level, doctor_id;
 
 ### WHAT THE RECURSIVE CTE PRODUCES
 
-    - Level 0 shows the two top-level doctors (no supervisor). Level 1 shows the doctors they supervise. Level 2 shows the doctors supervised by level 1 — and so on down the chain. The REPEAT function adds visual indentation to make the hierarchy easy to read.
+- Level 0 shows the two top-level doctors (no supervisor). Level 1 shows the doctors they supervise. Level 2 shows the doctors supervised by level 1 — and so on down the chain. The REPEAT function adds visual indentation to make the hierarchy easy to read.
 
 ### 6. Subqueries vs. CTEs: full comparison
-    - Both tools achieve similar outcomes, but they differ in readability, reusability, and how well they suit complex logic. Here is a direct side-by-side comparison.
+ - Both tools achieve similar outcomes, but they differ in readability, reusability, and how well they suit complex logic. Here is a direct side-by-side comparison.
 
 <img width="1063" height="950" alt="image" src="/snipping.JPG" />
 
@@ -250,7 +250,7 @@ CROSS JOIN overall_avg oa;
 
 When to reach for each one
 
-    - Use CTE when	The logic has multiple steps, the result needs to be referenced more than once, you want the query to be readable by others, or you need recursion to traverse a hierarchy.
+- Use CTE when	The logic has multiple steps, the result needs to be referenced more than once, you want the query to be readable by others, or you need recursion to traverse a hierarchy.
 
     - Use subquery when	The logic is simple and used only once — a quick scalar comparison, an IN filter, or an EXISTS check where a CTE would add unnecessary length.
 
